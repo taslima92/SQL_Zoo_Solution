@@ -102,3 +102,4 @@ select name
 where name like '%a%' and name like '%e%' and name like '%o%'
 and name like '%u%' and name like '%i%' and name not like '% %'
 
+
