@@ -29,3 +29,46 @@ SELECT player,teamid,stadium,mdate
   FROM game JOIN goal ON (id=matchid)
 where goal.teamid = 'GER'
 
+Q4:Show the team1, team2 and player for every goal scored by a player called Mario player LIKE 'Mario%'
+A4:
+select team1,team2,player
+from game JOIN goal
+ON(id=matchid)
+where player like 'Mario%'
+
+Q5:Show player, teamid, coach, gtime for all goals scored in the first 10 minutes gtime<=10
+A5:
+SELECT player, teamid,coach, gtime
+  FROM goal JOIN eteam 
+   ON(teamid = id)
+ WHERE gtime<=10
+
+Q6:List the dates of the matches and the name of the team in which 'Fernando Santos' was the team1 coach.
+A6:
+select mdate,teamname
+  from game join eteam
+   on(team1 = eteam.id)
+where coach = 'Fernando Santos'
+
+Q7:List the player for every goal scored in a game where the stadium was 'National Stadium, Warsaw'
+A7:
+select player 
+from goal join game
+on(id = matchid)
+where stadium = 'National Stadium, Warsaw'
+
+Q8:Instead show the name of all players who scored a goal against Germany.
+A8:
+select distinct player 
+from game join goal
+on(id=matchid)
+where (team1!= 'Ger' and team2= 'Ger' and teamid != 'Ger') or (team2!= 'Ger' and team1= 'Ger' and teamid != 'Ger') 
+
+Q9:Show teamname and the total number of goals scored.
+A9:
+select stadium,count(matchid) goals
+from game join goal
+on(id = matchid)
+group by stadium
+
+Q10:
