@@ -1,0 +1,97 @@
+Q1:List the films where the yr is 1962 [Show id, title]
+A1:
+SELECT id, title
+ FROM movie
+ WHERE yr=1962
+
+Q2:Give year of 'Citizen Kane'.
+A2:
+select yr from movie
+where title = 'Citizen Kane'
+
+Q3:List all of the Star Trek movies, include the id, title and yr (all of these movies include the words Star Trek in the title). Order results by year.
+A3:
+select id,title,yr from movie
+where title like '%Star Trek%'
+order by yr
+
+Q4:What id number does the actor 'Glenn Close' have?
+A4:
+select id from actor
+where name = 'Glenn Close'
+
+Q5:What is the id of the film 'Casablanca'
+A5:
+select id from movie
+where title = 'Casablanca'
+
+Q6:Obtain the cast list for 'Casablanca'.
+
+what is a cast list?
+A6:
+select actor.name from 
+movie,casting,actor
+where movie.id = movieid and actorid = actor.id
+and movie.id = 27
+
+Q7:Obtain the cast list for the film 'Alien'
+A7:
+select actor.name from 
+movie,casting,actor
+where movie.id = movieid and actorid = actor.id
+and movie.title = 'Alien'
+
+Q8:List the films in which 'Harrison Ford' has appeared
+A8:
+select movie.title from 
+movie,casting,actor
+where movie.id = movieid and actorid = actor.id
+and actor.name = 'Harrison Ford'
+
+Q9:List the films where 'Harrison Ford' has appeared - but not in the starring role. [Note: the ord field of casting gives the position of the actor. If ord=1 then this actor is in the starring role]
+A9:
+select movie.title from 
+movie,casting,actor
+where movie.id = movieid and actorid = actor.id
+and actor.name = 'Harrison Ford' and casting.ord != 1
+
+Q10:List the films together with the leading star for all 1962 films.
+A10:
+select title,name from 
+movie,casting,actor
+where movie.id = movieid and actorid = actor.id
+and yr=1962 and ord =1
+
+Q11:Which were the busiest years for 'Rock Hudson', show the year and the number of movies he made each year for any year in which he made more than 2 movies.
+A11:
+SELECT yr,COUNT(title) FROM
+  movie JOIN casting ON movie.id=movieid
+        JOIN actor   ON actorid=actor.id
+WHERE name='Rock Hudson'
+GROUP BY yr
+HAVING COUNT(title) > 2
+
+Q13:Obtain a list, in alphabetical order, of actors who've had at least 15 starring roles.
+A13:
+select name from casting join actor
+ on actorid = id where ord =1
+group by name
+having count(movieid) >= 15
+
+Q14:List the films released in the year 1978 ordered by the number of actors in the cast, then by title.
+A14:
+select title,count(actorid) from movie join casting on movie.id = movieid
+join actor on actor.id = actorid
+where yr = 1978
+group by title
+order by  2 desc, title
+
+Q15:List all the people who have worked with 'Art Garfunkel'.
+A15:
+select name from
+actor join casting on actor.id = actorid
+join movie on movie.id = movieid 
+where movieid in (select movie.id from actor join casting on actor.id = actorid
+join movie on movie.id = movieid where name = 'Art Garfunkel')
+and name != 'Art Garfunkel'
+order by name
